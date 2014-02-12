@@ -1,6 +1,6 @@
 var app, mode, host;
 app = angular.module('ckmpa.services', []);
-mode = 'dev';
+mode = 'mobile';
 host = mode === 'mobile' ? 'http://ckmpa.gopagoda.com/' : 'localhost';
 app.factory('Auth', function($http, $sanitize, Flash){
   var sanitizeCredentials, loginError, cacheSession, uncacheSession;

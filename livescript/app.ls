@@ -32,6 +32,11 @@ app.config ($stateProvider, $urlRouterProvider) ->
       templateUrl: 'templates/data-collection.html'
       controller: 'DataController'
     }
+    .state 'summary', {
+      url: '/summary/:mpaID'
+      templateUrl: 'templates/summary.html'
+      controller: 'DataController'
+    }
     .state 'finish', {
       url: '/finish/:mpaID'
       templateUrl: 'templates/finish.html'

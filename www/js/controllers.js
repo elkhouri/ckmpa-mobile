@@ -90,21 +90,36 @@ MpaController = function($scope, Mpas, $stateParams){
     return $scope.mpas = mpas;
   });
 };
-DataController = function($scope, $location, $stateParams, Datasheets, $ionicSlideBoxDelegate){
-  var datasheets;
+DataController = function($scope, $state, $stateParams, Datasheets, $ionicSlideBoxDelegate){
+  var next, datasheets, rightButtons;
   $scope.confirm = false;
   $scope.mpa_id = $stateParams.mpaID;
   $scope.mpa_name = $stateParams.mpaName;
   $scope.transect_name = $stateParams.transectName;
-  $scope.submit = function(){
-    return $location.path('/finish/' + $stateParams.mpaID);
+  $scope.tallies = [];
+  next = function(){
+    return $state.go('summary');
   };
-  return datasheets = Datasheets.query({}, function(){
+  $scope.submit = function(){
+    return $state.go('finish');
+  };
+  datasheets = Datasheets.query({}, function(){
     $scope.categories = flatten(
     map(function(it){
       return it.categories;
     })(
     datasheets));
+    $scope.fields = flatten(
+    map(function(it){
+      return it.fields;
+    })(
+    $scope.categories));
     return $ionicSlideBoxDelegate.update();
   });
+  rightButtons = [{
+    content: 'Next',
+    type: 'button-small button-clear',
+    tap: next
+  }];
+  return $scope.rightButtons = rightButtons;
 };

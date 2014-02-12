@@ -1,28 +1,31 @@
 <view title="transect_name" left-buttons="leftButtons" right-buttons="rightButtons">
-
 <content has-header='true'>
-<!-- <h3 class='text-center'>{{ transect_name }}</h3> -->
+
 <slide-box>
 	<slide ng-repeat="category in categories">
-		
-		<h3  class='padding'>{{category.name}}</h3>
+		<h3 class='text-center padding-top'>{{category.name}}</h3>
 		<div class="list">
-			<div class="item item-input-inset" ng-repeat="field in category.fields | filter:{category_id:category.id}">
-				<button class="button button-small icon ion-plus">
-					
-				</button>
-				<label class="item-input-wrapper">
-					<input type="text" placeholder="Email">
-				</label>
-				<button class="button button-small icon ion-minus">
-					
-				</button>
+			<div class="row" ng-if="category.name == 'On-Shore Activities'">
+				<div class='col-50'>
+					<p class='text-center'>Rocky</p>
+				</div>
+				<div class='col-50'>
+					<p class='text-center'>Sandy</p>
+				</div>
+			</div>
+			<div ng-repeat="field in fields | filter:{category_id:category.id}">
+				<div >
+
+					<div number-input field="field" ng-if="field.type == 'number'"></div>
+				</div>
+				
+				<div radio field="field" ng-if="field.type == 'radio'"></div>
+				<div checkbox field="field" ng-if="field.type == 'checkbox'"></div>
 			</div>
 		</div>
-		<button>TEST</button>
-		<!-- </content> -->
 	</slide>
 </slide-box>
+
 <!-- <form ng-show='!confirm' >
 	<accordion close-others="oneAtATime">
 		<accordion-group heading="{{category.name}}" ng-repeat="category in categories" is-open="isopen">

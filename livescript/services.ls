@@ -1,6 +1,6 @@
 app = angular.module 'ckmpa.services', []
 
-mode = 'dev'
+mode = 'mobile'
 host = if mode == 'mobile' then 'http://ckmpa.gopagoda.com/' else 'localhost'
 
 app.factory 'Auth', ($http, $sanitize, Flash) ->
