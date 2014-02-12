@@ -2,7 +2,7 @@
  * Copyright 2014 Drifty Co.
  * http://drifty.com/
  *
- * Ionic, v0.9.24-alpha-760
+ * Ionic, v0.9.24
  * A powerful HTML5 mobile app framework.
  * http://ionicframework.com/
  *
@@ -1887,7 +1887,7 @@ angular.module('ionic.ui.radio', [])
       if(!ngModel || !radioButtons) { return; }
 
       var setIt = function() {
-        
+        console.log('SET');
         $element.addClass('active');
         ngModel.$setViewValue($scope.$eval($attr.ngValue));
 
@@ -1895,7 +1895,7 @@ angular.module('ionic.ui.radio', [])
       };
 
       var clickHandler = function(e) {
-        
+        console.log('CLICK');
         setIt();
       };
 
@@ -1949,7 +1949,8 @@ angular.module('ionic.ui.scroll', [])
       };
 
       function prelink($scope, $element, $attr) {
-        var scrollView, scrollCtrl, sc = $element[0].children[0];
+        var scrollView, scrollCtrl,
+          sc = $element[0].children[0];
 
         if(attr.padding == "true") {
           sc.classList.add('padding');
@@ -2048,9 +2049,13 @@ angular.module('ionic.ui.sideMenu', ['ionic.service.gesture', 'ionic.service.vie
 
         $element.addClass('menu-content');
 
-        $scope.$watch(attr.dragContent, function(value) {
-          $scope.dragContent = value;
-        });
+        if (angular.isDefined(attr.dragContent)) {
+          $scope.$watch(attr.dragContent, function(value) {
+            $scope.dragContent = value;
+          });
+        } else {
+          $scope.dragContent = true;
+        }
 
         var defaultPrevented = false;
         var isDragging = false;
@@ -2671,7 +2676,7 @@ angular.module('ionic.ui.toggle', [])
       //   });
 
       //   ionic.on('drag', function(e) {
-      //     
+      //     console.log('drag');
       //     $scope.toggle.drag(e);
       //   }, handle);
 
@@ -3468,8 +3473,7 @@ angular.module('ionic.ui.virtualRepeat', [])
 
 angular.module('ionic.ui.scroll')
 
-.controller('$ionicScroll', ['$scope', 'scrollViewOptions', '$timeout', '$ionicScrollDelegate',
-                     function($scope,   scrollViewOptions,   $timeout,   $ionicScrollDelegate) {
+.controller('$ionicScroll', ['$scope', 'scrollViewOptions', '$timeout', '$ionicScrollDelegate', '$window', function($scope, scrollViewOptions, $timeout, $ionicScrollDelegate, $window) {
 
   scrollViewOptions.bouncing = angular.isDefined(scrollViewOptions.bouncing) ?
     scrollViewOptions.bouncing :
@@ -3488,6 +3492,14 @@ angular.module('ionic.ui.scroll')
 
   //Register delegate for event handling
   $ionicScrollDelegate.register($scope, $element, scrollView);
+
+  $window.addEventListener('resize', resize);
+  $scope.$on('$destroy', function() {
+    $window.removeEventListener('resize', resize);
+  });
+  function resize() {
+    scrollView.resize();
+  }
 
   $timeout(function() {
     scrollView.run();

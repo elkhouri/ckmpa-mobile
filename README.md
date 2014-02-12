@@ -1,6 +1,4 @@
-ionic-angular-cordova-seed
+MPA Watch
 ==========================
 
-The perfect starting point for an Ionic project.
-
-- [Ionic Tutorials](http://ionicframework.com/tutorials/)
+MPA Watch app built with [AngularJS](http://angularjs.org/), [Ionic Framework](http://ionicframework.com/), [PhoneGap](http://phonegap.com/)

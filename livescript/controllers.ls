@@ -17,37 +17,6 @@ LoginController = ($scope, $sanitize, $location, Auth, Flash) ->
   $scope.login = -> (Auth.login $scope.credentials).success (-> $location.path '/select-mpa')
   $scope.logout = -> Auth.logout!.success (-> $location.path '/')
 
-HomeController = ($scope, $location) ->
-
-ModalInstanceCtrl = ($scope, $modalInstance, items) ->
-  $scope.items = items
-  $scope.selected = {item: $scope.items.0}
-  $scope.ok = -> $modalInstance.close $scope.selected.item
-  $scope.cancel = -> $modalInstance.dismiss 'cancel'
-
-VolunteersController = ($scope, $location, $modal, Users) ->
-  users = Users.query!
-  $scope.users = users
-  $scope.edit = -> alert 'test'
-  $scope.open = (id) ->
-    user = void
-    users.forEach ((element, index, array) -> user := element if element.id is id)
-    modalInstance = $modal.open {
-      templateUrl: 'templates/modal.html'
-      controller: ModalInstanceCtrl
-      resolve: {
-        type: -> 'user'
-        items: -> user
-      }
-    }
-    modalInstance.result.then ((selectedItem) -> $scope.selected = selectedItem), ->
-
-ModalInstanceCtrl = ($scope, $modalInstance, type, items) ->
-  $scope.items = items
-  $scope.type = type
-  $scope.ok = -> $modalInstance.close $scope.selected.item
-  $scope.cancel = -> $modalInstance.dismiss 'cancel'
-
 MpaController = ($scope, Mpas, $stateParams) ->
   $scope.mpa_id = $stateParams.mpaID
   $scope.mpa_name = $stateParams.mpaName

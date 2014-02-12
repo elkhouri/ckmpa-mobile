@@ -26,27 +26,6 @@ app.config(function($stateProvider, $urlRouterProvider){
     url: '/finish/:mpaID',
     templateUrl: 'templates/finish.html',
     controller: 'DataController'
-  }).state('/dashboard', {
-    templateUrl: 'templates/dashboard.html',
-    controller: 'HomeController'
-  }).state('/volunteers', {
-    templateUrl: 'templates/volunteers.html',
-    controller: 'VolunteersController'
-  }).state('/patrols', {
-    templateUrl: 'templates/patrols.html',
-    controller: 'PatrolsController'
-  }).state('/mpas', {
-    templateUrl: 'templates/mpas.html',
-    controller: 'MpasController'
-  }).state('/graphs', {
-    templateUrl: 'templates/graphs.html',
-    controller: 'GraphsController'
-  }).state('/datasheets', {
-    templateUrl: 'templates/datasheets.html',
-    controller: 'DatasheetsController'
-  }).state('/demo', {
-    templateUrl: 'templates/demo.html',
-    controller: 'DemoController'
   });
   return $urlRouterProvider.otherwise('/');
 });

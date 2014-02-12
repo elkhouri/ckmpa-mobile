@@ -19,7 +19,7 @@
     "tests"
   ],
   "dependencies": {
-    "ionic": "driftyco/bower-ionic#0.9.24-alpha-760",
+    "ionic": "0.9.*",
     "angular-resource": "1.2.*"
   }
 }
