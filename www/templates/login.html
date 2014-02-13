@@ -1,5 +1,6 @@
 <view title="'Please Login'" left-buttons="leftButtons" right-buttons="rightButtons">
     <content has-header="true" padding="true">
+        <div class="alert alert-info" ng-show="flash" ng-bind="flash"></div>
         <div class="list">
             <form ng-submit="login()">
                 <label class="item item-input" for="inputUsername">
