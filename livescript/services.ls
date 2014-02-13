@@ -5,13 +5,13 @@ host = if mode == 'mobile' then 'http://ckmpa.gopagoda.com/' else 'localhost'
 
 app.factory 'Auth', ($http, $sanitize, Flash) ->
   sanitizeCredentials = (credentials) ->
-    {
-      username: $sanitize credentials.username
-      password: $sanitize credentials.password
-    }
+    username: $sanitize credentials.username
+    password: $sanitize credentials.password
+
   loginError = (response) -> Flash.show response.flash
   cacheSession = -> sessionStorage.setItem 'authenticated', true
   uncacheSession = -> sessionStorage.removeItem 'authenticated'
+
   {
     login: (credentials) ->
       login = $http.post host+'api/auth', sanitizeCredentials credentials
@@ -27,13 +27,23 @@ app.factory 'Auth', ($http, $sanitize, Flash) ->
   }
 
 app.factory 'Flash', ($rootScope) ->
-  {
-    show: (message) -> $rootScope.flash = message
-    clear: -> $rootScope.flash = ''
-  }
+  show: (message) -> $rootScope.flash = message
+  clear: -> $rootScope.flash = ''
 
 app.factory 'Users', ($resource) -> $resource host+'api/users/'
 
 app.factory 'Mpas', ($resource) -> $resource host+'api/mpas/'
 
 app.factory 'Datasheets' ($resource) -> $resource host+'api/datasheets'
+
+app.service 'Tallies' ->
+  tallies = []
+  init: (fields) -> @tallies = [{"name": f.name, "val": switch f.type
+  | 'number' => 0
+  | 'checkbox' => 'No'
+  | 'radio' => f.options[0].name } for f in fields] unless @tallies?
+  getTallies: -> @tallies
+  findTally: (name) -> @tallies |> find (.name == name)
+
+  
+  

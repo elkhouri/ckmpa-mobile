@@ -58,3 +58,44 @@ app.factory('Mpas', function($resource){
 app.factory('Datasheets', function($resource){
   return $resource(host + 'api/datasheets');
 });
+app.service('Tallies', function(){
+  var tallies;
+  tallies = [];
+  return {
+    init: function(fields){
+      var f;
+      if (this.tallies == null) {
+        return this.tallies = (function(){
+          var i$, ref$, len$, results$ = [];
+          for (i$ = 0, len$ = (ref$ = fields).length; i$ < len$; ++i$) {
+            f = ref$[i$];
+            results$.push({
+              "name": f.name,
+              "val": (fn$())
+            });
+          }
+          return results$;
+          function fn$(){
+            switch (f.type) {
+            case 'number':
+              return 0;
+            case 'checkbox':
+              return 'No';
+            case 'radio':
+              return f.options[0].name;
+            }
+          }
+        }());
+      }
+    },
+    getTallies: function(){
+      return this.tallies;
+    },
+    findTally: function(name){
+      return find(function(it){
+        return it.name === name;
+      })(
+      this.tallies);
+    }
+  };
+});

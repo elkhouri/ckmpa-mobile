@@ -21,7 +21,7 @@ app.config(function($stateProvider, $urlRouterProvider){
   }).state('summary', {
     url: '/summary/:mpaID',
     templateUrl: 'templates/summary.html',
-    controller: 'DataController'
+    controller: 'SummaryController'
   }).state('finish', {
     url: '/finish/:mpaID',
     templateUrl: 'templates/finish.html',

@@ -1,4 +1,4 @@
-var app, LoginController, MpaController, DataController;
+var app, LoginController, MpaController, DataController, SummaryController;
 app = angular.module('ckmpa.controllers', []);
 LoginController = function($scope, $sanitize, $location, Auth, Flash){
   var rightButtons;
@@ -16,7 +16,7 @@ LoginController = function($scope, $sanitize, $location, Auth, Flash){
       return $location.path('/select-mpa');
     });
   };
-  return $scope.logout = function(){
+  $scope.logout = function(){
     return Auth.logout().success(function(){
       return $location.path('/');
     });
@@ -35,19 +35,21 @@ MpaController = function($scope, Mpas, $stateParams){
     return $scope.mpas = mpas;
   });
 };
-DataController = function($scope, $state, $stateParams, Datasheets, $ionicSlideBoxDelegate){
-  var next, datasheets, rightButtons;
-  $scope.confirm = false;
+DataController = function($scope, $state, $stateParams, Datasheets, $ionicSlideBoxDelegate, Tallies, $ionicLoading){
+  var datasheets;
   $scope.mpa_id = $stateParams.mpaID;
   $scope.mpa_name = $stateParams.mpaName;
   $scope.transect_name = $stateParams.transectName;
-  $scope.tallies = [];
-  next = function(){
-    return $state.go('summary');
+  $scope.findTally = function(name){
+    return Tallies.findTally(name);
   };
-  $scope.submit = function(){
-    return $state.go('finish');
-  };
+  $scope.rightButtons = [{
+    content: 'Next',
+    type: 'button-small button-clear',
+    tap: function(){
+      return $state.go('summary');
+    }
+  }];
   datasheets = Datasheets.query({}, function(){
     $scope.categories = flatten(
     map(function(it){
@@ -59,12 +61,39 @@ DataController = function($scope, $state, $stateParams, Datasheets, $ionicSlideB
       return it.fields;
     })(
     $scope.categories));
-    return $ionicSlideBoxDelegate.update();
+    Tallies.init($scope.fields);
+    $ionicSlideBoxDelegate.update();
+    return $scope.loading.hide();
   });
-  rightButtons = [{
-    content: 'Next',
-    type: 'button-small button-clear',
-    tap: next
-  }];
-  return $scope.rightButtons = rightButtons;
+  return $scope.loading = $ionicLoading.show({
+    content: "<i class='icon ion-loading-c'></i> Loading",
+    animation: 'fade-in',
+    showBackdrop: true,
+    maxWidth: 200,
+    showDelay: 500
+  });
+};
+SummaryController = function($scope, $state, $stateParams, Datasheets, Tallies){
+  var datasheets;
+  $scope.mpa_id = $stateParams.mpaID;
+  $scope.mpa_name = $stateParams.mpaName;
+  $scope.transect_name = $stateParams.transectNames;
+  $scope.findTally = function(name){
+    return Tallies.findTally(name);
+  };
+  $scope.submit = function(){
+    return $state.go('finish');
+  };
+  return datasheets = Datasheets.query({}, function(){
+    $scope.categories = flatten(
+    map(function(it){
+      return it.categories;
+    })(
+    datasheets));
+    return $scope.fields = flatten(
+    map(function(it){
+      return it.fields;
+    })(
+    $scope.categories));
+  });
 };

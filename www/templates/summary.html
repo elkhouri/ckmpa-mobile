@@ -8,7 +8,7 @@
 		<ul class="list">
 			<li class="item" ng-repeat="field in fields | filter:{category_id:category.id}">
 				{{ field.name }}
-				<span class="badge badge-stable">{{ field.val }}</span>
+				<span class="badge badge-stable">{{ findTally(field.name)['val'] }}</span>
 			</li>
 		</ul>	
 	</div>

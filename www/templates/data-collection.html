@@ -14,11 +14,7 @@
 				</div>
 			</div>
 			<div ng-repeat="field in fields | filter:{category_id:category.id}">
-				<div >
-
-					<div number-input field="field" ng-if="field.type == 'number'"></div>
-				</div>
-				
+				<div number-input field="field" ng-if="field.type == 'number'"></div>
 				<div radio field="field" ng-if="field.type == 'radio'"></div>
 				<div checkbox field="field" ng-if="field.type == 'checkbox'"></div>
 			</div>
