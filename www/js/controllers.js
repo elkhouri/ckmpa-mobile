@@ -35,65 +35,36 @@ MpaController = function($scope, Mpas, $stateParams){
     return $scope.mpas = mpas;
   });
 };
-DataController = function($scope, $state, $stateParams, Datasheets, $ionicSlideBoxDelegate, Tallies, $ionicLoading){
-  var datasheets;
+DataController = function($scope, $state, $stateParams, Datasheets, $ionicSlideBoxDelegate, $ionicLoading, datasheets){
   $scope.mpa_id = $stateParams.mpaID;
   $scope.mpa_name = $stateParams.mpaName;
   $scope.transect_name = $stateParams.transectName;
-  $scope.findTally = function(name){
-    return Tallies.findTally(name);
+  $scope.getTally = function(name){
+    return Datasheets.getTally(name);
   };
-  $scope.rightButtons = [{
+  $scope.categories = Datasheets.categories();
+  $scope.fields = Datasheets.fields();
+  $scope.tallies = Datasheets.tallies();
+  $ionicSlideBoxDelegate.update();
+  return $scope.rightButtons = [{
     content: 'Next',
     type: 'button-small button-clear',
     tap: function(){
       return $state.go('summary');
     }
   }];
-  datasheets = Datasheets.query({}, function(){
-    $scope.categories = flatten(
-    map(function(it){
-      return it.categories;
-    })(
-    datasheets));
-    $scope.fields = flatten(
-    map(function(it){
-      return it.fields;
-    })(
-    $scope.categories));
-    Tallies.init($scope.fields);
-    $ionicSlideBoxDelegate.update();
-    return $scope.loading.hide();
-  });
-  return $scope.loading = $ionicLoading.show({
-    content: "<i class='icon ion-loading-c'></i> Loading",
-    animation: 'fade-in',
-    showBackdrop: true,
-    maxWidth: 200,
-    showDelay: 500
-  });
 };
-SummaryController = function($scope, $state, $stateParams, Datasheets, Tallies){
-  var datasheets;
+SummaryController = function($scope, $state, $stateParams, Datasheets){
   $scope.mpa_id = $stateParams.mpaID;
   $scope.mpa_name = $stateParams.mpaName;
-  $scope.transect_name = $stateParams.transectNames;
-  $scope.findTally = function(name){
-    return Tallies.findTally(name);
+  $scope.transect_name = $stateParams.transectName;
+  $scope.getTally = function(name){
+    return Datasheets.getTally(name);
   };
-  $scope.submit = function(){
+  $scope.categories = Datasheets.categories();
+  $scope.fields = Datasheets.fields();
+  $scope.tallies = Datasheets.tallies();
+  return $scope.submit = function(){
     return $state.go('finish');
   };
-  return datasheets = Datasheets.query({}, function(){
-    $scope.categories = flatten(
-    map(function(it){
-      return it.categories;
-    })(
-    datasheets));
-    return $scope.fields = flatten(
-    map(function(it){
-      return it.fields;
-    })(
-    $scope.categories));
-  });
 };

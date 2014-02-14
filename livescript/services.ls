@@ -11,20 +11,19 @@ app.factory 'Auth', ($http, $sanitize, Flash) ->
   loginError = (response) -> Flash.show response.flash
   cacheSession = -> sessionStorage.setItem 'authenticated', true
   uncacheSession = -> sessionStorage.removeItem 'authenticated'
-
-  {
-    login: (credentials) ->
-      login = $http.post host+'api/auth', sanitizeCredentials credentials
-      login.success cacheSession
-      login.success Flash.clear
-      login.error loginError
-      login
-    logout: ->
-      logout = $http.get host+'api/auth'
-      logout.success uncacheSession
-      logout
-    isLoggedIn: -> sessionStorage.getItem 'authenticated'
-  }
+  
+  login: (credentials) ->
+    login = $http.post host+'api/auth', sanitizeCredentials credentials
+    login.success cacheSession
+    login.success Flash.clear
+    login.error loginError
+    login
+  logout: ->
+    logout = $http.get host+'api/auth'
+    logout.success uncacheSession
+    logout
+  isLoggedIn: -> sessionStorage.getItem 'authenticated'
+  
 
 app.factory 'Flash', ($rootScope) ->
   show: (message) -> $rootScope.flash = message
@@ -34,16 +33,24 @@ app.factory 'Users', ($resource) -> $resource host+'api/users/'
 
 app.factory 'Mpas', ($resource) -> $resource host+'api/mpas/'
 
-app.factory 'Datasheets' ($resource) -> $resource host+'api/datasheets'
-
-app.service 'Tallies' ->
+app.factory 'Datasheets' ($resource) -> 
+  res = $resource host+'api/datasheets'
+  categories = []
+  fields = []
   tallies = []
-  init: (fields) -> @tallies = [{"name": f.name, "val": switch f.type
-  | 'number' => 0
-  | 'checkbox' => 'No'
-  | 'radio' => f.options[0].name } for f in fields] unless @tallies?
-  getTallies: -> @tallies
-  findTally: (name) -> @tallies |> find (.name == name)
 
+  datasheets = res.query {}, ->
+    categories := datasheets |> map (.categories)  |> flatten
+    fields := categories |> map (.fields) |> flatten
+    tallies := [{"name": f.name, "val": switch f.type
+    | 'number' => 0
+    | 'checkbox' => 'No'
+    | 'radio' => f.options[0].name } for f in fields]
+
+  datasheets: datasheets.$promise
+  categories: -> categories
+  fields: -> fields
+  tallies: -> tallies
+  getTally: (name) -> tallies |> find (.name == name)
   
   

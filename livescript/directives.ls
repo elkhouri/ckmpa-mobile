@@ -2,27 +2,19 @@
 
 app = angular.module 'ckmpa.directives', []
 app.directive 'numberInput', ->
-  controller = ($scope) ->
-    $scope.field.val = [0,0]
-    $scope.inc = (i) -> $scope.field.val[i] += 1
-    $scope.dec = (i) -> $scope.field.val[i] -= 1 unless $scope.field.val[i] <= 0
-  {
-    templateUrl: 'partials/number-input.html'
-    controller: controller
-  }
+  controller = ($scope, Datasheets) ->
+    Datasheets.getTally($scope.field.name)['val1'] = 0
+
+    $scope.tally = Datasheets.getTally($scope.field.name)
+
+    $scope.inc = (x) -> $scope.tally[x] += 1
+    $scope.dec = (x) -> $scope.tally[x] -= 1 unless $scope.tally[x] <= 0
+  
+  templateUrl: 'partials/number-input.html'
+  controller: controller
 
 app.directive 'checkbox', ->
-  controller = ($scope) ->
-    $scope.field.val = 'NO'
-  {
-    templateUrl: 'partials/checkbox.html'
-    controller: controller
-  }
+  templateUrl: 'partials/checkbox.html'
 
 app.directive 'radio', ->
-  controller = ($scope) ->
-    $scope.field.val = $scope.field.options[0].name
-  {
-    templateUrl: 'partials/radio.html'
-    controller: controller
-  }
+  templateUrl: 'partials/radio.html'

@@ -3,14 +3,15 @@ var app;
 app = angular.module('ckmpa.directives', []);
 app.directive('numberInput', function(){
   var controller;
-  controller = function($scope){
-    $scope.field.val = [0, 0];
-    $scope.inc = function(i){
-      return $scope.field.val[i] += 1;
+  controller = function($scope, Datasheets){
+    Datasheets.getTally($scope.field.name)['val1'] = 0;
+    $scope.tally = Datasheets.getTally($scope.field.name);
+    $scope.inc = function(x){
+      return $scope.tally[x] += 1;
     };
-    return $scope.dec = function(i){
-      if (!($scope.field.val[i] <= 0)) {
-        return $scope.field.val[i] -= 1;
+    return $scope.dec = function(x){
+      if (!($scope.tally[x] <= 0)) {
+        return $scope.tally[x] -= 1;
       }
     };
   };
@@ -20,22 +21,12 @@ app.directive('numberInput', function(){
   };
 });
 app.directive('checkbox', function(){
-  var controller;
-  controller = function($scope){
-    return $scope.field.val = 'NO';
-  };
   return {
-    templateUrl: 'partials/checkbox.html',
-    controller: controller
+    templateUrl: 'partials/checkbox.html'
   };
 });
 app.directive('radio', function(){
-  var controller;
-  controller = function($scope){
-    return $scope.field.val = $scope.field.options[0].name;
-  };
   return {
-    templateUrl: 'partials/radio.html',
-    controller: controller
+    templateUrl: 'partials/radio.html'
   };
 });

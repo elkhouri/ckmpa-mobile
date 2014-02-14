@@ -23,43 +23,39 @@ MpaController = ($scope, Mpas, $stateParams) ->
     $scope.transects = mpas |> map (.transects) |> flatten
     $scope.mpas = mpas
 
-DataController = ($scope, $state, $stateParams, Datasheets, $ionicSlideBoxDelegate, Tallies, $ionicLoading) ->
+DataController = ($scope, $state, $stateParams, Datasheets, $ionicSlideBoxDelegate, $ionicLoading, datasheets) ->
   $scope.mpa_id = $stateParams.mpaID
   $scope.mpa_name = $stateParams.mpaName
   $scope.transect_name = $stateParams.transectName
-  $scope.findTally = (name) -> Tallies.findTally(name)
+  $scope.getTally = (name) -> Datasheets.getTally(name)
+  $scope.categories = Datasheets.categories!
+  $scope.fields = Datasheets.fields!
+  $scope.tallies = Datasheets.tallies!
+  $ionicSlideBoxDelegate.update!
+
   $scope.rightButtons =
     content: 'Next'
     type:'button-small button-clear'
     tap: -> $state.go 'summary'
     ...
 
-  datasheets = Datasheets.query {}, ->
-    $scope.categories = datasheets |> map (.categories)  |> flatten
-    $scope.fields := $scope.categories |> map (.fields) |> flatten
-    Tallies.init $scope.fields
-    $ionicSlideBoxDelegate.update!
-    $scope.loading.hide!
+  # $scope.loading = $ionicLoading.show do
+  #       content: "<i class='icon ion-loading-c'></i> Loading"
+  #       animation: 'fade-in'
+  #       showBackdrop: true
+  #       maxWidth: 200
+  #       showDelay: 500
 
-  $scope.loading = $ionicLoading.show do
-        content: "<i class='icon ion-loading-c'></i> Loading"
-        animation: 'fade-in'
-        showBackdrop: true
-        maxWidth: 200
-        showDelay: 500
-
-SummaryController = ($scope, $state, $stateParams, Datasheets, Tallies) ->
+SummaryController = ($scope, $state, $stateParams, Datasheets) ->
   $scope.mpa_id = $stateParams.mpaID
   $scope.mpa_name = $stateParams.mpaName
-  $scope.transect_name = $stateParams.transectNames
-  $scope.findTally = (name) -> Tallies.findTally(name)
+  $scope.transect_name = $stateParams.transectName
+  $scope.getTally = (name) -> Datasheets.getTally(name)
+  $scope.categories = Datasheets.categories!
+  $scope.fields = Datasheets.fields!
+  $scope.tallies = Datasheets.tallies!
 
   $scope.submit = -> $state.go 'finish'
-
-  datasheets = Datasheets.query {}, ->
-    $scope.categories = datasheets |> map (.categories)  |> flatten
-    $scope.fields := $scope.categories |> map (.fields) |> flatten
-
 
 
 

@@ -1,6 +1,7 @@
 {map, filter, find, flatten} = require 'prelude-ls'
 app = angular.module 'ckmpa', [
   'ionic'
+  'pasvaz.bindonce'
   'ngResource'
   'ngSanitize'
   'ngAnimate'
@@ -9,6 +10,9 @@ app = angular.module 'ckmpa', [
   'ckmpa.directives'
   'ckmpa.controllers'
 ]
+
+app.run ->
+  FastClick.attach document.body
 
 app.config ($stateProvider, $urlRouterProvider) ->
   $stateProvider
@@ -31,6 +35,7 @@ app.config ($stateProvider, $urlRouterProvider) ->
       url: '/data-collection/:mpaID/:mpaName/:transectName'
       templateUrl: 'templates/data-collection.html'
       controller: 'DataController'
+      resolve: 'datasheets': (Datasheets) -> Datasheets.datasheets
     }
     .state 'summary', {
       url: '/summary/:mpaID'

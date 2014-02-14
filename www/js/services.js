@@ -56,46 +56,61 @@ app.factory('Mpas', function($resource){
   return $resource(host + 'api/mpas/');
 });
 app.factory('Datasheets', function($resource){
-  return $resource(host + 'api/datasheets');
-});
-app.service('Tallies', function(){
-  var tallies;
+  var res, categories, fields, tallies, datasheets;
+  res = $resource(host + 'api/datasheets');
+  categories = [];
+  fields = [];
   tallies = [];
-  return {
-    init: function(fields){
-      var f;
-      if (this.tallies == null) {
-        return this.tallies = (function(){
-          var i$, ref$, len$, results$ = [];
-          for (i$ = 0, len$ = (ref$ = fields).length; i$ < len$; ++i$) {
-            f = ref$[i$];
-            results$.push({
-              "name": f.name,
-              "val": (fn$())
-            });
-          }
-          return results$;
-          function fn$(){
-            switch (f.type) {
-            case 'number':
-              return 0;
-            case 'checkbox':
-              return 'No';
-            case 'radio':
-              return f.options[0].name;
-            }
-          }
-        }());
+  datasheets = res.query({}, function(){
+    var f;
+    categories = flatten(
+    map(function(it){
+      return it.categories;
+    })(
+    datasheets));
+    fields = flatten(
+    map(function(it){
+      return it.fields;
+    })(
+    categories));
+    return tallies = (function(){
+      var i$, ref$, len$, results$ = [];
+      for (i$ = 0, len$ = (ref$ = fields).length; i$ < len$; ++i$) {
+        f = ref$[i$];
+        results$.push({
+          "name": f.name,
+          "val": (fn$())
+        });
       }
+      return results$;
+      function fn$(){
+        switch (f.type) {
+        case 'number':
+          return 0;
+        case 'checkbox':
+          return 'No';
+        case 'radio':
+          return f.options[0].name;
+        }
+      }
+    }());
+  });
+  return {
+    datasheets: datasheets.$promise,
+    categories: function(){
+      return categories;
     },
-    getTallies: function(){
-      return this.tallies;
+    fields: function(){
+      return fields;
     },
-    findTally: function(name){
+    tallies: function(){
+      return tallies;
+    },
+    getTally: function(name){
       return find(function(it){
         return it.name === name;
       })(
-      this.tallies);
+      tallies);
     }
   };
 });
