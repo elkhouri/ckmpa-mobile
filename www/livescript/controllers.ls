@@ -23,7 +23,7 @@ MpaController = ($scope, Mpas, $stateParams) ->
     $scope.transects = mpas |> map (.transects) |> flatten
     $scope.mpas = mpas
 
-DataController = ($scope, $state, $stateParams, Datasheets, $ionicSlideBoxDelegate, $ionicLoading, datasheets) ->
+DataController = ($scope, $state, $stateParams, Datasheets, $ionicSlideBoxDelegate, $ionicLoading) ->
   $scope.mpa_id = $stateParams.mpaID
   $scope.mpa_name = $stateParams.mpaName
   $scope.transect_name = $stateParams.transectName
@@ -57,6 +57,8 @@ SummaryController = ($scope, $state, $stateParams, Datasheets) ->
 
   $scope.submit = -> $state.go 'finish'
 
+FinishController = ($scope, $state, $stateParams) ->
+  
 
 
 

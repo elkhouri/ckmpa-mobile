@@ -45,7 +45,7 @@ app.config ($stateProvider, $urlRouterProvider) ->
     .state 'finish', {
       url: '/finish/:mpaID'
       templateUrl: 'templates/finish.html'
-      controller: 'DataController'
+      controller: 'FinishController'
     }
 
   $urlRouterProvider.otherwise('/');
