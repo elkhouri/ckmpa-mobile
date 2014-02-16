@@ -31,13 +31,7 @@ DataController = ($scope, $state, $stateParams, Datasheets, $ionicSlideBoxDelega
   $scope.categories = Datasheets.categories!
   $scope.fields = Datasheets.fields!
   $scope.tallies = Datasheets.tallies!
-  $ionicSlideBoxDelegate.update!
-
-  $scope.rightButtons =
-    content: 'Next'
-    type:'button-small button-clear'
-    tap: -> $state.go 'summary'
-    ...
+  $scope.submit = -> $state.go 'summary'
 
   # $scope.loading = $ionicLoading.show do
   #       content: "<i class='icon ion-loading-c'></i> Loading"

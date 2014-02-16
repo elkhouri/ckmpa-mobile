@@ -45,14 +45,9 @@ DataController = function($scope, $state, $stateParams, Datasheets, $ionicSlideB
   $scope.categories = Datasheets.categories();
   $scope.fields = Datasheets.fields();
   $scope.tallies = Datasheets.tallies();
-  $ionicSlideBoxDelegate.update();
-  return $scope.rightButtons = [{
-    content: 'Next',
-    type: 'button-small button-clear',
-    tap: function(){
-      return $state.go('summary');
-    }
-  }];
+  return $scope.submit = function(){
+    return $state.go('summary');
+  };
 };
 SummaryController = function($scope, $state, $stateParams, Datasheets){
   $scope.mpa_id = $stateParams.mpaID;
