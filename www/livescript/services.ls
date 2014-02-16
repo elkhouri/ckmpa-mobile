@@ -38,6 +38,7 @@ app.factory 'Datasheets' ($resource) ->
   categories = []
   fields = []
   tallies = []
+  comments = []
 
   datasheets = res.query {}, ->
     categories := datasheets |> map (.categories)  |> flatten
@@ -51,6 +52,7 @@ app.factory 'Datasheets' ($resource) ->
   categories: -> categories
   fields: -> fields
   tallies: -> tallies
+  comments: -> comments
   getTally: (name) -> tallies |> find (.name == name)
   
   

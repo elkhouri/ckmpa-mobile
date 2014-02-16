@@ -27,11 +27,13 @@ DataController = ($scope, $state, $stateParams, Datasheets, $ionicSlideBoxDelega
   $scope.mpa_id = $stateParams.mpaID
   $scope.mpa_name = $stateParams.mpaName
   $scope.transect_name = $stateParams.transectName
-  $scope.getTally = (name) -> Datasheets.getTally(name)
   $scope.categories = Datasheets.categories!
   $scope.fields = Datasheets.fields!
   $scope.tallies = Datasheets.tallies!
+  $scope.comments = Datasheets.comments!
+  
   $scope.submit = -> $state.go 'summary'
+  $scope.getTally = (name) -> Datasheets.getTally(name)
 
   # $scope.loading = $ionicLoading.show do
   #       content: "<i class='icon ion-loading-c'></i> Loading"
@@ -48,6 +50,7 @@ SummaryController = ($scope, $state, $stateParams, Datasheets) ->
   $scope.categories = Datasheets.categories!
   $scope.fields = Datasheets.fields!
   $scope.tallies = Datasheets.tallies!
+  $scope.comments = Datasheets.comments!
 
   $scope.submit = -> $state.go 'finish'
 
