@@ -49,10 +49,22 @@ app.factory 'Datasheets' ($resource) ->
     | 'radio' => f.options[0].name } for f in fields]
 
   datasheets: datasheets.$promise
+  res: res
   categories: -> categories
   fields: -> fields
   tallies: -> tallies
   comments: -> comments
   getTally: (name) -> tallies |> find (.name == name)
+
+app.factory 'Favorites' (Datasheets) ->
+  favorites = 
+    * name: "Recreation"
+      val1: 0
+    * name: "Wildlife Watching"
+      val1: 0
+
+  favorites: -> favorites
+
+
   
   

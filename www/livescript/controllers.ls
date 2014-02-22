@@ -23,24 +23,23 @@ MpaController = ($scope, Mpas, $stateParams) ->
     $scope.transects = mpas |> map (.transects) |> flatten
     $scope.mpas = mpas
 
-DataController = ($scope, $state, $stateParams, Datasheets, $ionicSlideBoxDelegate, $ionicLoading) ->
+DataController = ($scope, $state, $stateParams, $ionicLoading, Datasheets, Favorites) ->
   $scope.mpa_id = $stateParams.mpaID
   $scope.mpa_name = $stateParams.mpaName
   $scope.transect_name = $stateParams.transectName
-  $scope.categories = Datasheets.categories!
-  $scope.fields = Datasheets.fields!
-  $scope.tallies = Datasheets.tallies!
   $scope.comments = Datasheets.comments!
+
   
   $scope.submit = -> $state.go 'summary'
   $scope.getTally = (name) -> Datasheets.getTally(name)
 
-  # $scope.loading = $ionicLoading.show do
-  #       content: "<i class='icon ion-loading-c'></i> Loading"
-  #       animation: 'fade-in'
-  #       showBackdrop: true
-  #       maxWidth: 200
-  #       showDelay: 500
+  datasheets = Datasheets.datasheets.then (data) ->
+    $scope.categories = Datasheets.categories!
+    $scope.favorites = Favorites.favorites!
+    $scope.loading.hide!
+
+  $scope.loading = $ionicLoading.show do
+    content: "<i class='icon ion-loading-c'></i> Loading"
 
 SummaryController = ($scope, $state, $stateParams, Datasheets) ->
   $scope.mpa_id = $stateParams.mpaID

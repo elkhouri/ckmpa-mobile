@@ -20,12 +20,7 @@ app.config(function($stateProvider, $urlRouterProvider){
   }).state('data-collection', {
     url: '/data-collection/:mpaID/:mpaName/:transectName',
     templateUrl: 'templates/data-collection.html',
-    controller: 'DataController',
-    resolve: {
-      'datasheets': function(Datasheets){
-        return Datasheets.datasheets;
-      }
-    }
+    controller: 'DataController'
   }).state('summary', {
     url: '/summary/:mpaID',
     templateUrl: 'templates/summary.html',

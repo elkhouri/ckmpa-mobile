@@ -2,6 +2,12 @@
 <ion-content has-header='true'>
 
 <div class="list">
+	<div class="item item-icon-right item-divider">
+		Favorites
+	</div>
+	<div ng-repeat="field in favorites">
+		<div number-input></div>
+	</div>
 	<div ng-repeat="category in categories">
 		<div class="item item-icon-right item-divider" ng-click='showThis = !showThis'>
 			<i class="icon ion-ios7-arrow-down"></i>
@@ -19,9 +25,9 @@
 		  </div>
 		</div>
 		<div ng-repeat="field in category.fields" ng-show='showThis'>
-			<div number-input field="field" ng-if="field.type == 'number'"></div>
-			<div radio field="field" ng-if="field.type == 'radio'"></div>
-			<div checkbox field="field" ng-if="field.type == 'checkbox'"></div>
+			<div number-input ng-if="field.type == 'number'"></div>
+			<div radio ng-if="field.type == 'radio'"></div>
+			<div checkbox ng-if="field.type == 'checkbox'"></div>
 		</div>
 	</div>
 	<h4 class='text-center'>Comments</h4>

@@ -98,6 +98,7 @@ app.factory('Datasheets', function($resource){
   });
   return {
     datasheets: datasheets.$promise,
+    res: res,
     categories: function(){
       return categories;
     },
@@ -115,6 +116,23 @@ app.factory('Datasheets', function($resource){
         return it.name === name;
       })(
       tallies);
+    }
+  };
+});
+app.factory('Favorites', function(Datasheets){
+  var favorites;
+  favorites = [
+    {
+      name: "Recreation",
+      val1: 0
+    }, {
+      name: "Wildlife Watching",
+      val1: 0
+    }
+  ];
+  return {
+    favorites: function(){
+      return favorites;
     }
   };
 });

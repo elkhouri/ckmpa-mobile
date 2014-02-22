@@ -35,7 +35,7 @@ app.config ($stateProvider, $urlRouterProvider) ->
       url: '/data-collection/:mpaID/:mpaName/:transectName'
       templateUrl: 'templates/data-collection.html'
       controller: 'DataController'
-      resolve: 'datasheets': (Datasheets) -> Datasheets.datasheets
+      #resolve: 'datasheets': (Datasheets) -> Datasheets.datasheets
     }
     .state 'summary', {
       url: '/summary/:mpaID'

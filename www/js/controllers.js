@@ -35,20 +35,26 @@ MpaController = function($scope, Mpas, $stateParams){
     return $scope.mpas = mpas;
   });
 };
-DataController = function($scope, $state, $stateParams, Datasheets, $ionicSlideBoxDelegate, $ionicLoading){
+DataController = function($scope, $state, $stateParams, $ionicLoading, Datasheets, Favorites){
+  var datasheets;
   $scope.mpa_id = $stateParams.mpaID;
   $scope.mpa_name = $stateParams.mpaName;
   $scope.transect_name = $stateParams.transectName;
-  $scope.categories = Datasheets.categories();
-  $scope.fields = Datasheets.fields();
-  $scope.tallies = Datasheets.tallies();
   $scope.comments = Datasheets.comments();
   $scope.submit = function(){
     return $state.go('summary');
   };
-  return $scope.getTally = function(name){
+  $scope.getTally = function(name){
     return Datasheets.getTally(name);
   };
+  datasheets = Datasheets.datasheets.then(function(data){
+    $scope.categories = Datasheets.categories();
+    $scope.favorites = Favorites.favorites();
+    return $scope.loading.hide();
+  });
+  return $scope.loading = $ionicLoading.show({
+    content: "<i class='icon ion-loading-c'></i> Loading"
+  });
 };
 SummaryController = function($scope, $state, $stateParams, Datasheets){
   $scope.mpa_id = $stateParams.mpaID;

@@ -18,7 +18,7 @@ var sassDir = 'sass';
 var targetCSSDir = 'www/css';
  
 // Where do you store your CoffeeScript files?
-var lsDir = 'livescript';
+var lsDir = 'www/livescript';
 
 // Which directory should CoffeeScript compile to?
 var targetJSDir = 'www/js';
