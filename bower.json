@@ -23,8 +23,5 @@
     "angular-resource": "1.2.*",
     "fastclick": "*",
     "angular-bindonce": "*"
-  },
-  "resolutions": {
-    "angular": "1.2.10"
   }
 }
