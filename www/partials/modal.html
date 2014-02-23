@@ -1,9 +1,9 @@
-<div class="modal">
+<div class="modal" animation="">
   <header class="bar bar-header bar-positive">
     <h1 class="title">Editing Favorites</h1>
     <!-- <button class="button button-clear" ng-click="closeModal()">Cancel</button> -->
   </header>
-  <ion-content has-header="true" padding="true">
+  <ion-content has-header="true" padding="true" animation="">
       <div class="list">
         <div class="item item-divider">
           Current Favorites
@@ -18,10 +18,12 @@
         </div>
 
         <div ng-repeat="category in categories | hasNumericField">
-          <div class="item item-divider" ng-click='showThis = !showThis'>
+          <div class="item item-icon-right item-divider" ng-click='showThis = !showThis;resize()'>
+            <i ng-show="!showThis" class="icon ion-ios7-arrow-down"></i>
+            <i ng-show="showThis" class="icon ion-ios7-arrow-up"></i>
             {{ category.name }}
           </div>
-          <div class="item tabs tabs-stable" style="border-left:1px solid #ddd;border-right:1px solid #ddd"ng-show='showThis' ng-init="activeTab = 0"
+          <div class="item tabs" ng-show='showThis' ng-init="activeTab = 0"
             ng-if="category.name == 'On-Shore Activities' || category.name == 'Boating'">
             <div class="tab-item" ng-switch="category.name" ng-click='activeTab = 0' 
               ng-class='{active: activeTab == 0, positive: activeTab == 0}'>
@@ -35,7 +37,7 @@
             </div>
           </div>
 
-          <div ng-repeat="field in category.fields" ng-if="showThis">
+          <div ng-repeat="field in category.fields" ng-show="showThis">
             <div class="item item-button-right">
               {{ field.name }}
               <button class="button button-clear button-dark" ng-click="addFavorite(field.name)">
@@ -45,7 +47,7 @@
           </div>
 
         </div>
-        <button class="button button-full button-positive" ng-click="closeModal()">Close</button>
+        <button class="button button-full button-stable" ng-click="closeModal()">Close</button>
       </div>
     </div>
   </ion-content>

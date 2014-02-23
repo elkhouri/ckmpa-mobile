@@ -1,4 +1,4 @@
-<ion-view title="'Summary'" left-buttons="leftButtons">
+<ion-view title="'Summary'" right-buttons="rightButtons">
 <ion-content has-header='true'>
 
 	<div bindonce ng-repeat="category in categories">
@@ -13,7 +13,7 @@
 
 	<div class='padding'>
 		<h4 class='text-center'>Comments</h4>
-		<textarea disabled ng-bind='comments["val"]'></textarea>
+		<textarea readonly ng-bind='comments["val"]'></textarea>
 		<button class='button button-block' ng-click='submit()'>Submit</button>
 	</div>
 </ion-content>

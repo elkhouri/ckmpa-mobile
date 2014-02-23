@@ -11,9 +11,6 @@ app = angular.module 'ckmpa', [
   'ckmpa.controllers'
 ]
 
-app.run ->
-  FastClick.attach document.body
-
 app.config ($stateProvider, $urlRouterProvider) ->
   $stateProvider
     .state 'login', {

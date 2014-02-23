@@ -5,19 +5,19 @@ LoginController = ($scope, $sanitize, $location, Auth, Flash) !->
     username: ''
     password: ''
 
-  rightButtons =
-    content: 'Logout'
-    type:'button-small button-clear'
-    ...
-
-  $scope.rightButtons = rightButtons
-
   $scope.login = -> Auth.login $scope.credentials .success -> $location.path '/select-mpa'
   $scope.logout = -> Auth.logout!.success -> $location.path '/'
 
 MpaController = ($scope, Mpas, $stateParams) ->
   $scope.mpa_id = $stateParams.mpaID
   $scope.mpa_name = $stateParams.mpaName
+
+  rightButtons =
+    content: 'Logout'
+    type:'button-small button-clear'
+    ...
+
+  $scope.rightButtons = rightButtons
 
   mpas = Mpas.query {}, ->
     $scope.transects = mpas |> map (.transects) |> flatten
@@ -35,6 +35,7 @@ DataController = ($scope, $state, $stateParams, $ionicLoading, $ionicModal, Data
   $scope.getFavorite = (name) -> Favorites.get(name)
   $scope.addFavorite = (name) -> Favorites.add(name)
   $scope.deleteFavorite = (name) -> Favorites.delete(name)
+  $scope.resize = -> $scope.$broadcast('scroll.resize')
 
   $ionicModal.fromTemplateUrl 'partials/modal.html', 
     (modal) -> $scope.modal = modal,
@@ -55,6 +56,13 @@ DataController = ($scope, $state, $stateParams, $ionicLoading, $ionicModal, Data
     $scope.favorites = Favorites.favorites!
     $scope.loading.hide!
 
+  rightButtons =
+    content: 'Logout'
+    type:'button-small button-clear'
+    ...
+
+  $scope.rightButtons = rightButtons
+
   $scope.loading = $ionicLoading.show do
     content: "<i class='icon ion-loading-c'></i> Loading"
 
@@ -69,6 +77,13 @@ SummaryController = ($scope, $state, $stateParams, Datasheets) ->
   $scope.comments = Datasheets.comments!
 
   $scope.submit = -> $state.go 'finish'
+
+  rightButtons =
+    content: 'Logout'
+    type:'button-small button-clear'
+    ...
+
+  $scope.rightButtons = rightButtons
 
 FinishController = ($scope, $state, $stateParams) ->
   
