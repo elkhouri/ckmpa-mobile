@@ -35,7 +35,7 @@ MpaController = function($scope, Mpas, $stateParams){
     return $scope.mpas = mpas;
   });
 };
-DataController = function($scope, $state, $stateParams, $ionicLoading, Datasheets, Favorites){
+DataController = function($scope, $state, $stateParams, $ionicLoading, $ionicModal, Datasheets, Favorites){
   var datasheets;
   $scope.mpa_id = $stateParams.mpaID;
   $scope.mpa_name = $stateParams.mpaName;
@@ -47,6 +47,30 @@ DataController = function($scope, $state, $stateParams, $ionicLoading, Datasheet
   $scope.getTally = function(name){
     return Datasheets.getTally(name);
   };
+  $scope.getFavorite = function(name){
+    return Favorites.get(name);
+  };
+  $scope.addFavorite = function(name){
+    return Favorites.add(name);
+  };
+  $scope.deleteFavorite = function(name){
+    return Favorites['delete'](name);
+  };
+  $ionicModal.fromTemplateUrl('partials/modal.html', function(modal){
+    return $scope.modal = modal;
+  }, {
+    scope: $scope,
+    animation: 'slide-in-up'
+  });
+  $scope.openModal = function(){
+    return $scope.modal.show();
+  };
+  $scope.closeModal = function(){
+    return $scope.modal.hide();
+  };
+  $scope.$on('$destroy', function(){
+    return $scope.modal.remove();
+  });
   datasheets = Datasheets.datasheets.then(function(data){
     $scope.categories = Datasheets.categories();
     $scope.favorites = Favorites.favorites();

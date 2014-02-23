@@ -60,10 +60,21 @@ app.factory 'Favorites' (Datasheets) ->
   favorites = 
     * name: "Recreation"
       val1: 0
-    * name: "Wildlife Watching"
+    * name: "Offshore Recreation"
       val1: 0
 
   favorites: -> favorites
+  add: (name) -> 
+    if not @get name and favorites.length < 5
+      favorites.push do
+        name: name 
+        val1: 0
+
+  get: (name) -> favorites |> find (.name == name)
+  delete: (name) -> 
+    i = favorites.map (e) -> e.name 
+    .indexOf name
+    favorites.splice i,1 unless i < 0
 
 
   

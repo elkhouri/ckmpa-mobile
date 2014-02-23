@@ -126,13 +126,36 @@ app.factory('Favorites', function(Datasheets){
       name: "Recreation",
       val1: 0
     }, {
-      name: "Wildlife Watching",
+      name: "Offshore Recreation",
       val1: 0
     }
   ];
   return {
     favorites: function(){
       return favorites;
+    },
+    add: function(name){
+      if (!this.get(name) && favorites.length < 5) {
+        return favorites.push({
+          name: name,
+          val1: 0
+        });
+      }
+    },
+    get: function(name){
+      return find(function(it){
+        return it.name === name;
+      })(
+      favorites);
+    },
+    'delete': function(name){
+      var i;
+      i = favorites.map(function(e){
+        return e.name;
+      }).indexOf(name);
+      if (!(i < 0)) {
+        return favorites.splice(i, 1);
+      }
     }
   };
 });

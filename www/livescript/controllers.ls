@@ -23,15 +23,32 @@ MpaController = ($scope, Mpas, $stateParams) ->
     $scope.transects = mpas |> map (.transects) |> flatten
     $scope.mpas = mpas
 
-DataController = ($scope, $state, $stateParams, $ionicLoading, Datasheets, Favorites) ->
+DataController = ($scope, $state, $stateParams, $ionicLoading, $ionicModal, Datasheets, Favorites) ->
   $scope.mpa_id = $stateParams.mpaID
   $scope.mpa_name = $stateParams.mpaName
   $scope.transect_name = $stateParams.transectName
   $scope.comments = Datasheets.comments!
-
+  # $scope.favorites = Favorites.favorites!
   
   $scope.submit = -> $state.go 'summary'
   $scope.getTally = (name) -> Datasheets.getTally(name)
+  $scope.getFavorite = (name) -> Favorites.get(name)
+  $scope.addFavorite = (name) -> Favorites.add(name)
+  $scope.deleteFavorite = (name) -> Favorites.delete(name)
+
+  $ionicModal.fromTemplateUrl 'partials/modal.html', 
+    (modal) -> $scope.modal = modal,
+    scope: $scope
+    animation: 'slide-in-up'
+
+  $scope.openModal = ->
+    $scope.modal.show!
+
+  $scope.closeModal = ->
+    $scope.modal.hide!
+
+  $scope.$on '$destroy', ->
+    $scope.modal.remove!
 
   datasheets = Datasheets.datasheets.then (data) ->
     $scope.categories = Datasheets.categories!

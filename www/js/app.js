@@ -1,5 +1,5 @@
-var ref$, map, filter, find, flatten, app;
-ref$ = require('prelude-ls'), map = ref$.map, filter = ref$.filter, find = ref$.find, flatten = ref$.flatten;
+var ref$, map, filter, find, flatten, any, app;
+ref$ = require('prelude-ls'), map = ref$.map, filter = ref$.filter, find = ref$.find, flatten = ref$.flatten, any = ref$.any;
 app = angular.module('ckmpa', ['ionic', 'pasvaz.bindonce', 'ngResource', 'ngSanitize', 'ngAnimate', 'ckmpa.filters', 'ckmpa.services', 'ckmpa.directives', 'ckmpa.controllers']);
 app.run(function(){
   return FastClick.attach(document.body);

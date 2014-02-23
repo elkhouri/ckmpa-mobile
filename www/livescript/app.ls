@@ -1,4 +1,4 @@
-{map, filter, find, flatten} = require 'prelude-ls'
+{map, filter, find, flatten, any} = require 'prelude-ls'
 app = angular.module 'ckmpa', [
   'ionic'
   'pasvaz.bindonce'
