@@ -118,13 +118,13 @@ app.factory('Favorites', function(Datasheets){
       return favorites;
     },
     add: function(field){
-      if (!this.get(name) && favorites.length < 5) {
+      if (!this.get(field) && favorites.length < 5) {
         return favorites.push(field);
       }
     },
-    get: function(name){
-      return find(function(it){
-        return it.name === name;
+    get: function(field){
+      return find(function(x){
+        return x === field;
       })(
       favorites);
     },

@@ -61,11 +61,11 @@ app.factory 'Favorites' (Datasheets) ->
     favorites.push (Datasheets.fields! |> find (.name is "Offshore Recreation"))
 
   favorites: -> favorites
-  add: (field) -> 
-    if not @get name and favorites.length < 5
+  add: (field) ->
+    if not @get field and favorites.length < 5
       favorites.push field
 
-  get: (name) -> favorites |> find (.name == name)
+  get: (field) -> favorites |> find ((x) -> x is field)
   delete: (name) -> 
     i = favorites.map (e) -> e.name 
     .indexOf name

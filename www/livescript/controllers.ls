@@ -32,7 +32,6 @@ DataController = ($scope, $state, $stateParams, $ionicLoading, $ionicModal, Data
   $scope.categories = []
   
   $scope.submit = -> $state.go 'summary'
-  $scope.getFavorite = (name) -> Favorites.get(name)
 
   $scope.addFavorite = (name) ->
     $scope.modalError = ""

@@ -45,9 +45,6 @@ DataController = function($scope, $state, $stateParams, $ionicLoading, $ionicMod
   $scope.submit = function(){
     return $state.go('summary');
   };
-  $scope.getFavorite = function(name){
-    return Favorites.get(name);
-  };
   $scope.addFavorite = function(name){
     $scope.modalError = "";
     if (!Favorites.add(name)) {
