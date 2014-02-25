@@ -11,6 +11,6 @@
     "gulp-livereload": "~1.0.1",
     "tiny-lr": "0.0.5",
     "js2coffee": "~0.2.7",
-    "gulp-livescript": "~0.1.1"
+    "gulp-livescript": "~0.2.0"
   }
 }
