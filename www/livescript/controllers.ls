@@ -59,6 +59,7 @@ DataController = ($scope, $state, $stateParams, $ionicLoading, $ionicModal, Data
 
   $scope.closeModal = ->
     $scope.modal.hide!
+    Favorites.save!
 
   $scope.$on '$destroy', ->
     $scope.modal.remove!

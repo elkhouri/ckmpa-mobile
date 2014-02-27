@@ -34,7 +34,7 @@ app.factory 'Users', ($resource) -> $resource host+'api/users/'
 app.factory 'Mpas', ($resource) -> $resource host+'api/mpas/'
 
 app.factory 'Datasheets' ($resource) -> 
-  res = $resource host+'api/datasheets'
+  res = $resource host+'api/datasheets' {}
   categories = []
   fields = []
   tallies = []
@@ -53,14 +53,15 @@ app.factory 'Datasheets' ($resource) ->
   getTally: (name,sub,cat) -> tallies |> find ((x) -> x.name is name and x.sub is sub and x.category is cat)
   addTally: (tally) -> tallies.push tally
 
-app.factory 'Favorites' (Datasheets) ->
-  favorites = []
-
-  datasheets = Datasheets.datasheets.then (data) ->
-    favorites.push (Datasheets.fields! |> find (.name is "Recreation"))
-    favorites.push (Datasheets.fields! |> find (.name is "Offshore Recreation"))
+app.factory 'Favorites' (Datasheets, localStorageService) ->
+  if not favorites = localStorageService.get "favorites"
+    favorites = []
+    datasheets = Datasheets.datasheets.then (data) ->
+      favorites.push (Datasheets.fields! |> find (.name is "Recreation"))
+      favorites.push (Datasheets.fields! |> find (.name is "Offshore Recreation"))
 
   favorites: -> favorites
+  save: -> localStorageService.set 'favorites' favorites
   add: (field) ->
     if not @get field and favorites.length < 5
       favorites.push field

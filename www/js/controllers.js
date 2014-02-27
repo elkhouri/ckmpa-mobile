@@ -73,7 +73,8 @@ DataController = function($scope, $state, $stateParams, $ionicLoading, $ionicMod
     return $scope.modal.show();
   };
   $scope.closeModal = function(){
-    return $scope.modal.hide();
+    $scope.modal.hide();
+    return Favorites.save();
   };
   $scope.$on('$destroy', function(){
     return $scope.modal.remove();

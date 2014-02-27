@@ -57,7 +57,7 @@ app.factory('Mpas', function($resource){
 });
 app.factory('Datasheets', function($resource){
   var res, categories, fields, tallies, comments, datasheets;
-  res = $resource(host + 'api/datasheets');
+  res = $resource(host + 'api/datasheets', {});
   categories = [];
   fields = [];
   tallies = [];
@@ -100,22 +100,27 @@ app.factory('Datasheets', function($resource){
     }
   };
 });
-app.factory('Favorites', function(Datasheets){
+app.factory('Favorites', function(Datasheets, localStorageService){
   var favorites, datasheets;
-  favorites = [];
-  datasheets = Datasheets.datasheets.then(function(data){
-    favorites.push(find(function(it){
-      return it.name === "Recreation";
-    })(
-    Datasheets.fields()));
-    return favorites.push(find(function(it){
-      return it.name === "Offshore Recreation";
-    })(
-    Datasheets.fields()));
-  });
+  if (!(favorites = localStorageService.get("favorites"))) {
+    favorites = [];
+    datasheets = Datasheets.datasheets.then(function(data){
+      favorites.push(find(function(it){
+        return it.name === "Recreation";
+      })(
+      Datasheets.fields()));
+      return favorites.push(find(function(it){
+        return it.name === "Offshore Recreation";
+      })(
+      Datasheets.fields()));
+    });
+  }
   return {
     favorites: function(){
       return favorites;
+    },
+    save: function(){
+      return localStorageService.set('favorites', favorites);
     },
     add: function(field){
       if (!this.get(field) && favorites.length < 5) {
