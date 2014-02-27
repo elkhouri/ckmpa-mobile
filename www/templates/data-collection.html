@@ -11,7 +11,9 @@
 	<div ng-repeat="field in favorites">
 		<number-input field="field" sub="0"></number-input>
 	</div>
-	<div class='item item-inset' ng-click='openModal()'><div class='button button-small'>Edit Favorites</div></div>
+	<div class="padding-horizontal">
+	<div class='button button-block button-small' ng-click='openModal()'>Edit Favorites</div>
+	</div>
 
 	<div ng-repeat="category in categories" ng-init="activeTab = 0">
 		<div class="item item-icon-right item-divider" ng-click="showThis = !showThis; resize()">
