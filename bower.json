@@ -20,7 +20,8 @@
   ],
   "dependencies": {
     "angular": "1.2.12",
-    "ionic": "0.9.*",
-    "angular-resource": "1.2.12"
+    "ionic": "latest",
+    "angular-resource": "1.2.12",
+    "lodash": "latest"
   }
 }
