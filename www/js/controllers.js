@@ -1,3 +1,4 @@
+"use strict";
 var app, LoginController, MpaController, DataController, SummaryController, FinishController;
 app = angular.module('ckmpa.controllers', []);
 LoginController = function($scope, $state, Auth, Flash){
@@ -16,7 +17,7 @@ LoginController = function($scope, $state, Auth, Flash){
     });
   };
 };
-MpaController = function($scope, $state, $stateParams, Mpas, Auth){
+MpaController = function($scope, $state, $stateParams, $ionicLoading, Mpas, Auth){
   var rightButtons, mpas;
   $scope.mpa_id = $stateParams.mpaId;
   $scope.mpa_name = $stateParams.mpaName;
@@ -42,13 +43,14 @@ MpaController = function($scope, $state, $stateParams, Mpas, Auth){
     }
   }];
   $scope.rightButtons = rightButtons;
-  return mpas = Mpas.query({}, function(){
-    $scope.transects = flatten(
-    map(function(it){
-      return it.transects;
-    })(
-    mpas));
-    return $scope.mpas = mpas;
+  mpas = Mpas.query({}, function(){
+    $scope.transects = _(mpas).pluck('transects').flatten().value();
+    $scope.mpas = mpas;
+    return $scope.loading.hide();
+  });
+  return $scope.loading = $ionicLoading.show({
+    content: "<i class='icon ion-loading-a'></i> Loading",
+    showDelay: 400
   });
 };
 DataController = function($scope, $state, $stateParams, $ionicLoading, $ionicModal, $timeout, Datasheets, Favorites, Auth){
@@ -64,7 +66,7 @@ DataController = function($scope, $state, $stateParams, $ionicLoading, $ionicMod
     Datasheets.saveTallies();
     return timer = $timeout(saveTallies, time_interval);
   };
-  timer = $timeout(saveTallies, time_interval);
+  saveTallies();
   $scope.stop = function(){
     return $timeout.cancel(timer);
   };

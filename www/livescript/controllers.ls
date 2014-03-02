@@ -1,3 +1,5 @@
+"use strict"
+
 app = angular.module 'ckmpa.controllers', []
 
 LoginController = ($scope, $state, Auth, Flash) !->
@@ -8,7 +10,7 @@ LoginController = ($scope, $state, Auth, Flash) !->
   $scope.login = -> Auth.login $scope.credentials .success -> $state.go 'select-mpa'
   $scope.logout = -> Auth.logout!.success -> $state.go 'login'
 
-MpaController = ($scope, $state,  $stateParams, Mpas, Auth) ->
+MpaController = ($scope, $state,  $stateParams, $ionicLoading, Mpas, Auth) ->
   $scope.mpa_id = $stateParams.mpaId
   $scope.mpa_name = $stateParams.mpaName
 
@@ -31,8 +33,13 @@ MpaController = ($scope, $state,  $stateParams, Mpas, Auth) ->
   $scope.rightButtons = rightButtons
 
   mpas = Mpas.query {}, ->
-    $scope.transects = mpas |> map (.transects) |> flatten
+    $scope.transects = _(mpas).pluck \transects .flatten! .value!
     $scope.mpas = mpas
+    $scope.loading.hide!
+
+  $scope.loading = $ionicLoading.show do
+    content: "<i class='icon ion-loading-a'></i> Loading"
+    showDelay: 400
 
 DataController = ($scope, $state, $stateParams, $ionicLoading, $ionicModal, $timeout, Datasheets, Favorites, Auth) ->
   $scope.mpa_id = $stateParams.mpaID
@@ -48,7 +55,7 @@ DataController = ($scope, $state, $stateParams, $ionicLoading, $ionicModal, $tim
     Datasheets.saveTallies!
     timer := $timeout saveTallies, time_interval
 
-  timer = $timeout saveTallies, time_interval
+  saveTallies!
 
   $scope.stop = -> $timeout.cancel timer
   
