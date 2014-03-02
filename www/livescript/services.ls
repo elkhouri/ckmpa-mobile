@@ -30,9 +30,8 @@ app.factory 'Auth', ($http, $sanitize, Flash) ->
 
   logout: ->
     logout = $http do
-     method: 'delete'
-     url: host + 'auth'
-
+      method: 'delete'
+      url: host + 'auth'
     .success logoutSuccess
 
   user: -> user || sessionStorage.getItem 'user'

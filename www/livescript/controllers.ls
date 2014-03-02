@@ -1,14 +1,14 @@
 app = angular.module 'ckmpa.controllers', []
 
-LoginController = ($scope, $sanitize, $location, Auth, Flash) !->
+LoginController = ($scope, $state, Auth, Flash) !->
   $scope.credentials =
     username: ''
     password: ''
 
-  $scope.login = -> Auth.login $scope.credentials .success -> $location.path '/select-mpa'
-  $scope.logout = -> Auth.logout!.success -> $location.path '/'
+  $scope.login = -> Auth.login $scope.credentials .success -> $state.go 'select-mpa'
+  $scope.logout = -> Auth.logout!.success -> $state.go 'login'
 
-MpaController = ($scope, $state,  $stateParams, Mpas) ->
+MpaController = ($scope, $state,  $stateParams, Mpas, Auth) ->
   $scope.mpa_id = $stateParams.mpaId
   $scope.mpa_name = $stateParams.mpaName
 
@@ -24,7 +24,8 @@ MpaController = ($scope, $state,  $stateParams, Mpas) ->
 
   rightButtons =
     content: 'Logout'
-    type:'button-small button-clear'
+    type: 'button-small button-clear'
+    tap: -> Auth.logout!.success -> $state.go 'login'
     ...
 
   $scope.rightButtons = rightButtons
@@ -33,7 +34,7 @@ MpaController = ($scope, $state,  $stateParams, Mpas) ->
     $scope.transects = mpas |> map (.transects) |> flatten
     $scope.mpas = mpas
 
-DataController = ($scope, $state, $stateParams, $ionicLoading, $ionicModal, $timeout, Datasheets, Favorites) ->
+DataController = ($scope, $state, $stateParams, $ionicLoading, $ionicModal, $timeout, Datasheets, Favorites, Auth) ->
   $scope.mpa_id = $stateParams.mpaID
   $scope.mpa_name = $stateParams.mpaName
   $scope.transect_name = decodeURIComponent $stateParams.transectName
@@ -89,6 +90,7 @@ DataController = ($scope, $state, $stateParams, $ionicLoading, $ionicModal, $tim
   rightButtons =
     content: 'Logout'
     type:'button-small button-clear'
+    tap: -> Auth.logout!.success -> $state.go 'login'
     ...
 
   $scope.rightButtons = rightButtons
@@ -96,7 +98,7 @@ DataController = ($scope, $state, $stateParams, $ionicLoading, $ionicModal, $tim
   $scope.loading = $ionicLoading.show do
     content: "<i class='icon ion-loading-a'></i> Loading"
 
-SummaryController = ($scope, $state, $stateParams, $ionicLoading, Datasheets, Patrols) ->
+SummaryController = ($scope, $state, $stateParams, $ionicLoading, Datasheets, Patrols, Auth) ->
   $scope.mpa_id = $stateParams.mpaID
   $scope.mpa_name = $stateParams.mpaName
   $scope.transect_name = $stateParams.transectName
@@ -128,13 +130,17 @@ SummaryController = ($scope, $state, $stateParams, $ionicLoading, Datasheets, Pa
   rightButtons =
     content: 'Logout'
     type:'button-small button-clear'
+    tap: -> Auth.logout!.success -> $state.go 'login'
     ...
 
   $scope.rightButtons = rightButtons
 
-FinishController = ($scope, $state, $stateParams) ->
+FinishController = ($scope, $state, $stateParams, Auth) ->
   $scope.mpa_id = $stateParams.mpaID
   $scope.mpa_name = $stateParams.mpaName
+
+  $scope.logout = ->
+    Auth.logout!.success -> $state.go 'login'
   
 
 

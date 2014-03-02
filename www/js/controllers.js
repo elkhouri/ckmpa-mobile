@@ -1,22 +1,22 @@
 var app, LoginController, MpaController, DataController, SummaryController, FinishController;
 app = angular.module('ckmpa.controllers', []);
-LoginController = function($scope, $sanitize, $location, Auth, Flash){
+LoginController = function($scope, $state, Auth, Flash){
   $scope.credentials = {
     username: '',
     password: ''
   };
   $scope.login = function(){
     return Auth.login($scope.credentials).success(function(){
-      return $location.path('/select-mpa');
+      return $state.go('select-mpa');
     });
   };
   $scope.logout = function(){
     return Auth.logout().success(function(){
-      return $location.path('/');
+      return $state.go('login');
     });
   };
 };
-MpaController = function($scope, $state, $stateParams, Mpas){
+MpaController = function($scope, $state, $stateParams, Mpas, Auth){
   var rightButtons, mpas;
   $scope.mpa_id = $stateParams.mpaId;
   $scope.mpa_name = $stateParams.mpaName;
@@ -34,7 +34,12 @@ MpaController = function($scope, $state, $stateParams, Mpas){
   };
   rightButtons = [{
     content: 'Logout',
-    type: 'button-small button-clear'
+    type: 'button-small button-clear',
+    tap: function(){
+      return Auth.logout().success(function(){
+        return $state.go('login');
+      });
+    }
   }];
   $scope.rightButtons = rightButtons;
   return mpas = Mpas.query({}, function(){
@@ -46,7 +51,7 @@ MpaController = function($scope, $state, $stateParams, Mpas){
     return $scope.mpas = mpas;
   });
 };
-DataController = function($scope, $state, $stateParams, $ionicLoading, $ionicModal, $timeout, Datasheets, Favorites){
+DataController = function($scope, $state, $stateParams, $ionicLoading, $ionicModal, $timeout, Datasheets, Favorites, Auth){
   var time_interval, timer, saveTallies, datasheets, rightButtons;
   $scope.mpa_id = $stateParams.mpaID;
   $scope.mpa_name = $stateParams.mpaName;
@@ -103,14 +108,19 @@ DataController = function($scope, $state, $stateParams, $ionicLoading, $ionicMod
   });
   rightButtons = [{
     content: 'Logout',
-    type: 'button-small button-clear'
+    type: 'button-small button-clear',
+    tap: function(){
+      return Auth.logout().success(function(){
+        return $state.go('login');
+      });
+    }
   }];
   $scope.rightButtons = rightButtons;
   return $scope.loading = $ionicLoading.show({
     content: "<i class='icon ion-loading-a'></i> Loading"
   });
 };
-SummaryController = function($scope, $state, $stateParams, $ionicLoading, Datasheets, Patrols){
+SummaryController = function($scope, $state, $stateParams, $ionicLoading, Datasheets, Patrols, Auth){
   var datasheets, rightButtons;
   $scope.mpa_id = $stateParams.mpaID;
   $scope.mpa_name = $stateParams.mpaName;
@@ -141,11 +151,21 @@ SummaryController = function($scope, $state, $stateParams, $ionicLoading, Datash
   });
   rightButtons = [{
     content: 'Logout',
-    type: 'button-small button-clear'
+    type: 'button-small button-clear',
+    tap: function(){
+      return Auth.logout().success(function(){
+        return $state.go('login');
+      });
+    }
   }];
   return $scope.rightButtons = rightButtons;
 };
-FinishController = function($scope, $state, $stateParams){
+FinishController = function($scope, $state, $stateParams, Auth){
   $scope.mpa_id = $stateParams.mpaID;
-  return $scope.mpa_name = $stateParams.mpaName;
+  $scope.mpa_name = $stateParams.mpaName;
+  return $scope.logout = function(){
+    return Auth.logout().success(function(){
+      return $state.go('login');
+    });
+  };
 };
